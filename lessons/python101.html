@@ -1,0 +1,214 @@
+<h1>Python 101</h1>
+<h3>Python distributions</h3>
+<ul>
+<li><a href="https://www.python.org">official distribution</a> at <a href="http://www.python.org">www.python.org</a></li>
+<li><a href="https://www.continuum.io/downloads">Anaconda</a> from Continuum Analytics</li>
+<li><a href="http://ipython.org/">IPython</a>
+A more detailed list can be found <a href="https://wiki.python.org/moin/PythonDistributions">here</a>.</li>
+</ul>
+<h3>Working environment</h3>
+<p>Create a virtual environment:</p>
+<pre><code class="language-sh">$ conda create --name ml python=3.5 
+</code></pre>
+<p>Reference: <a href="https://conda.io/docs/using/envs.html#create-a-separate-environment">https://conda.io/docs/using/envs.html#create-a-separate-environment</a></p>
+<h3>Basic packages for Machine Learning</h3>
+<ul>
+<li>numpy</li>
+<li>matplotlib</li>
+<li>scipy</li>
+</ul>
+<h5>Package installation</h5>
+<ul>
+<li><code>pip</code></li>
+<li><code>conda</code>
+Example:<pre><code class="language-sh">$ pip install numpy
+$ conda install matplotlib
+</code></pre>
+References:
+[1] <a href="https://conda.io/docs/using/pkgs.html#install-a-package">https://conda.io/docs/using/pkgs.html#install-a-package</a></li>
+</ul>
+<h2>Linear Regression</h2>
+<h3>Problem Statement</h3>
+<p>Assume that the system can be modeled as</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20y%20%5Capprox%20f(%5Cmathbf%7Bx%7D)%20%3D%20%5Cwidehat%7By%7D%20" alt=" y \approx f(\mathbf{x}) = \widehat{y} " /></p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20f(%5Cmathbf%7Bx%7D)%20%3D%20w_0%20%2B%20w_1%20x_1%20%2B%20w_2%20x_2%20%2B%20...%20%2B%20w_M%20x_M%20" alt=" f(\mathbf{x}) = w_0 + w_1 x_1 + w_2 x_2 + ... + w_M x_M " /></p>
+<p>where</p>
+<ul>
+<li>input <img src="https://tex.s2cms.ru/svg/%5Cmathbf%7Bx%7D%20%3D%20%5Bx_%7B1%7D%2C%20x_%7B2%7D%2C%20...%2C%20x_%7BM%7D%5D%5ET" alt="\mathbf{x} = [x_{1}, x_{2}, ..., x_{M}]^T" /></li>
+<li>output <img src="https://tex.s2cms.ru/svg/y" alt="y" /></li>
+</ul>
+<p>Given <img src="https://tex.s2cms.ru/svg/%20N%20" alt=" N " /> inputs <img src="https://tex.s2cms.ru/svg/%5Cmathbf%7Bx%7D_1%2C%20...%2C%20%5Cmathbf%7Bx%7D_N" alt="\mathbf{x}_1, ..., \mathbf{x}_N" /> and corresponding outputs <img src="https://tex.s2cms.ru/svg/%20y_1%2C%20...%2C%20y_N%20" alt=" y_1, ..., y_N " />, estimate the coefficients <img src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bw%7D%20%3D%20%5Bw_0%2C%20w_1%2C%20...%2C%20w_%7BM%7D%5D%5ET%20" alt=" \mathbf{w} = [w_0, w_1, ..., w_{M}]^T " /></p>
+<h3>Solution</h3>
+<p>For an input <img src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bx%7D_i%20" alt=" \mathbf{x}_i " />, let <img src="https://tex.s2cms.ru/svg/%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_i%20%3D%20%5B1%2C%20x_%7Bi1%7D%2C%20...%2C%20x_%7BiM%7D%5D%5ET%20" alt=" \bar{\mathbf{x}}_i = [1, x_{i1}, ..., x_{iM}]^T " /> be the extended input</p>
+<p>The model become</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20y_i%20%5Capprox%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_i%5ET%20%5Cmathbf%7Bw%7D%20%3D%20%5Cwidehat%7By%7D_i%20" alt=" y_i \approx \bar{\mathbf{x}}_i^T \mathbf{w} = \widehat{y}_i " /></p>
+<p>Prediction error:</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cfrac%7B1%7D%7B2%7D%20e_i%5E2%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20(y_i%20-%20%5Cwidehat%7By%7D_i)%5E2%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20(y_i%20-%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_i%5ET%20%5Cmathbf%7Bw%7D)%5E2%20" alt=" \frac{1}{2} e_i^2 = \frac{1}{2} (y_i - \widehat{y}_i)^2 = \frac{1}{2} (y_i - \bar{\mathbf{x}}_i^T \mathbf{w})^2 " /></p>
+<p>Cost function for :</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathcal%7BL%7D(%5Cmathbf%7Bw%7D)%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20%5Csum_%7Bi%20%3D%201%7D%5E%7BN%7D%20(y_i%20-%20%5Cbar%7B%5Cmathbf%7Bx%7D_i%7D%5ET%20%5Cmathbf%7Bw%7D)%5E2%20%3D%20%5Cfrac%7B1%7D%7B2%7D%20%7C%7C%20%5Cmathbf%7By%7D%20-%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%20%5Cmathbf%7Bw%7D%20%7C%7C_2%5E2" alt=" \mathcal{L}(\mathbf{w}) = \frac{1}{2} \sum_{i = 1}^{N} (y_i - \bar{\mathbf{x}_i}^T \mathbf{w})^2 = \frac{1}{2} || \mathbf{y} - \bar{\mathbf{X}} \mathbf{w} ||_2^2" /></p>
+<p>where</p>
+<ul>
+<li><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%20%3D%20%5B%5Cbar%7B%5Cmathbf%7Bx%7D%7D_1%2C%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_2%20...%2C%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_N%5D%20" alt=" \bar{\mathbf{X}} = [\bar{\mathbf{x}}_1, \bar{\mathbf{x}}_2 ..., \bar{\mathbf{x}}_N] " /></li>
+<li><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7By%7D%20%3D%20%5By_1%2C%20y_2%2C%20...%2C%20y_N%5D%5ET%20" alt=" \mathbf{y} = [y_1, y_2, ..., y_N]^T " /></li>
+<li><img src="https://tex.s2cms.ru/svg/%20%7C%7C%20.%20%7C%7C_2%20" alt=" || . ||_2 " /> is Euclidean norm</li>
+</ul>
+<p>Optimal solution:</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bw%7D%5E%7B*%7D%20%3D%20%5Cmathrm%7Bargmin%7D%5Climit_%7B%5Cmathbf%7Bw%7D%7D%20%5Cmathcal%7BL%7D(%5Cmathbf%7Bw%7D)%20%0A" alt=" \mathbf{w}^{*} = \mathrm{argmin}\limit_{\mathbf{w}} \mathcal{L}(\mathbf{w}) 
+" /></p>
+<p>Solve for <img src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bw%7D%5E%7B*%7D%20" alt=" \mathbf{w}^{*} " /> by setting the gradient of <img src="https://tex.s2cms.ru/svg/%20%5Cmathcal%7BL%7D(%5Cmathbf%7Bw%7D)%20" alt=" \mathcal{L}(\mathbf{w}) " /> to <img src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7B0%7D%20" alt=" \mathbf{0} " /></p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cfrac%7B%5Cpartial%5Cmathcal%7BL%7D(%5Cmathbf%7Bw%7D)%7D%7B%5Cpartial%20%5Cmathbf%7Bw%7D%7D%0A%3D%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%5ET%20(%5Cbar%7B%5Cmathbf%7BX%7D%7D%20%5Cmathbf%7Bw%7D%20-%20%5Cmathbf%7By%7D)%0A%3D%20%5Cmathbf%7B0%7D%20" alt=" \frac{\partial\mathcal{L}(\mathbf{w})}{\partial \mathbf{w}}
+= \bar{\mathbf{X}}^T (\bar{\mathbf{X}} \mathbf{w} - \mathbf{y})
+= \mathbf{0} " /></p>
+<p>Solution:</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bw%7D%5E%7B*%7D%20%0A%20%3D%20(%5Cbar%7B%5Cmathbf%7BX%7D%7D%5ET%20%5Cbar%7B%5Cmathbf%7BX%7D%7D)%5ET%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%5ET%20%5Cmathbf%7By%7D%20%3D%20%5Cmathbf%7BA%7D%5E%7B%5Cdagger%7D%20%5Cmathbf%7Bb%7D" alt=" \mathbf{w}^{*} 
+ = (\bar{\mathbf{X}}^T \bar{\mathbf{X}})^T \bar{\mathbf{X}}^T \mathbf{y} = \mathbf{A}^{\dagger} \mathbf{b}" /></p>
+<h3>Solve with Python</h3>
+<p>In this section, we will</p>
+<ul>
+<li>use the <code>numpy</code> module to represent vectors and matrices and perform computations to obtain the solution.</li>
+<li>use the <code>matplotlib</code> module for plots</li>
+</ul>
+<h4>Example problem</h4>
+<p>Given data of heights and weights of 15 people</p>
+<table>
+<thead>
+<tr>
+<th>Height</th>
+<th>Weight</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>147</td>
+<td>49</td>
+</tr>
+<tr>
+<td>168</td>
+<td>60</td>
+</tr>
+<tr>
+<td>150</td>
+<td>50</td>
+</tr>
+<tr>
+<td>170</td>
+<td>72</td>
+</tr>
+<tr>
+<td>153</td>
+<td>51</td>
+</tr>
+<tr>
+<td>173</td>
+<td>63</td>
+</tr>
+<tr>
+<td>155</td>
+<td>52</td>
+</tr>
+<tr>
+<td>175</td>
+<td>64</td>
+</tr>
+<tr>
+<td>158</td>
+<td>54</td>
+</tr>
+<tr>
+<td>178</td>
+<td>66</td>
+</tr>
+<tr>
+<td>160</td>
+<td>56</td>
+</tr>
+<tr>
+<td>180</td>
+<td>67</td>
+</tr>
+<tr>
+<td>163</td>
+<td>58</td>
+</tr>
+<tr>
+<td>183</td>
+<td>68</td>
+</tr>
+<tr>
+<td>165</td>
+<td>59</td>
+</tr>
+</tbody>
+</table>
+<p>Predict the weight of a person given the height.</p>
+<h4>Solution in Python with <code>numpy</code></h4>
+<p>Start with importing the required modules:</p>
+<pre><code class="language-py">import numpy as np
+import matplotlib.pyplot as plt
+</code></pre>
+<p>Next, initialize and plot the given data.</p>
+<p>Python has a built-in type <code>list</code> to represent an ordered collection of objects. For example,</p>
+<pre><code class="language-py">a = [1, 2, 7, 6 ]
+b = [ [1, 2, 3], [3, 4, 5] ]
+</code></pre>
+<p>The type <code>list</code> does not support computations on vector and matrix, so we need to convert objects of type <code>list</code> to type <code>numpy.ndarray</code>.</p>
+<pre><code class="language-py"># height (cm)
+X = np.array([[147, 150, 153, 158, 163, 165, 168, 170, 173, 175, 178, 180, 183]]).T
+# weight (kg)
+y = np.array([[ 49, 50, 51,  54, 58, 59, 60, 62, 63, 64, 66, 67, 68]]).T
+</code></pre>
+<p>Note that <code>numpy.ndarray</code> represents arrays, not matrices (as in MATLAB). Here, a matrix is represented by a 2-D array.</p>
+<pre><code class="language-py"># Visualize data 
+plt.plot(X, y, 'ro')
+plt.axis([140, 190, 45, 75])
+plt.xlabel('Height (cm)')
+plt.ylabel('Weight (kg)')
+plt.show()
+</code></pre>
+<p><img src="http://machinelearningcoban.com/assets/LR/output_3_0.png" alt="Fig. 1"></p>
+<p>Now, we build matrices and vectors required to solve for <img src="https://tex.s2cms.ru/svg/%5Cmathbf%7Bw%7D%5E%7B*%7D" alt="\mathbf{w}^{*}" />:</p>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%20%3D%20%5B%5Cbar%7B%5Cmathbf%7Bx%7D%7D_1%2C%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_2%20...%2C%20%5Cbar%7B%5Cmathbf%7Bx%7D%7D_N%5D%20" alt=" \bar{\mathbf{X}} = [\bar{\mathbf{x}}_1, \bar{\mathbf{x}}_2 ..., \bar{\mathbf{x}}_N] " /></p>
+<pre><code class="language-py"># Building Xbar 
+one = np.ones((X.shape[0], 1))
+Xbar = np.concatenate((one, X), axis = 1)
+</code></pre>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7BA%7D%5E%7B%5Cdagger%7D%0A%20%3D%20(%5Cbar%7B%5Cmathbf%7BX%7D%7D%5ET%20%5Cbar%7B%5Cmathbf%7BX%7D%7D)%5ET%20" alt=" \mathbf{A}^{\dagger}
+ = (\bar{\mathbf{X}}^T \bar{\mathbf{X}})^T " /></p>
+<pre><code class="language-py">A = np.dot(Xbar.T, Xbar)
+</code></pre>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bb%7D%0A%20%3D%20%5Cbar%7B%5Cmathbf%7BX%7D%7D%5ET%20%5Cmathbf%7By%7D%20" alt=" \mathbf{b}
+ = \bar{\mathbf{X}}^T \mathbf{y} " /></p>
+<pre><code class="language-py">b = np.dot(Xbar.T, y)
+</code></pre>
+<p align="center"><img align="center" src="https://tex.s2cms.ru/svg/%20%5Cmathbf%7Bw%7D%5E%7B*%7D%20%0A%20%3D%20%5Cmathbf%7BA%7D%5E%7B%5Cdagger%7D%20%5Cmathbf%7Bb%7D" alt=" \mathbf{w}^{*} 
+ = \mathbf{A}^{\dagger} \mathbf{b}" /></p>
+<pre><code class="language-py">w = np.dot(np.linalg.pinv(A), b)
+print('w = ', w)
+</code></pre>
+<p>Visual illustration</p>
+<pre><code class="language-py"># Preparing the fitting line 
+w_0 = w[0][0]
+w_1 = w[1][0]
+x0 = np.linspace(145, 185, 2)
+y0 = w_0 + w_1*x0
+
+# Drawing the fitting line 
+plt.plot(X.T, y.T, 'ro')     # data 
+plt.plot(x0, y0)               # the fitting line
+plt.axis([140, 190, 45, 75])
+plt.xlabel('Height (cm)')
+plt.ylabel('Weight (kg)')
+plt.show()
+</code></pre>
+<p><img src="http://machinelearningcoban.com/assets/LR/output_5_1.png" alt="Fig. 2"></p>
+<h4>Solution in Python with <code>scikit-learn</code></h4>
+<pre><code class="language-py">from sklearn import datasets, linear_model
+
+# fit the model by Linear Regression
+regr = linear_model.LinearRegression(fit_intercept=False) # fit_intercept = False for calculating the bias
+regr.fit(Xbar, y)
+
+# Compare two results
+print( 'Solution found by scikit-learn  : ', regr.coef_ )
+print( 'Solution found by (5): ', w.T)
+</code></pre>
