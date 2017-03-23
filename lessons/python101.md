@@ -111,7 +111,7 @@ Predict the weight of a person given the height.
 #### Solution in Python with `numpy` 
 Start with importing the required modules:
 
-```
+```py
 import numpy as np
 import matplotlib.pyplot as plt
 ```
@@ -119,19 +119,19 @@ import matplotlib.pyplot as plt
 Next, initialize and plot the given data.
 
 Python has a built-in type `list` to represent an ordered collection of objects. For example,
-```
+```py
 a = [1, 2, 7, 6 ]
 b = [ [1, 2, 3], [3, 4, 5] ]
 ```
 The type `list` does not support computations on vector and matrix, so we need to convert objects of type `list` to type `numpy.ndarray`.
-```
+```py
 # height (cm)
 X = np.array([[147, 150, 153, 158, 163, 165, 168, 170, 173, 175, 178, 180, 183]]).T
 # weight (kg)
 y = np.array([[ 49, 50, 51,  54, 58, 59, 60, 62, 63, 64, 66, 67, 68]]).T
 ```
 Note that `numpy.ndarray` represents arrays, not matrices (as in MATLAB). Here, a matrix is represented by a 2-D array.
-```
+```py
 # Visualize data 
 plt.plot(X, y, 'ro')
 plt.axis([140, 190, 45, 75])
@@ -146,7 +146,7 @@ Now, we build matrices and vectors required to solve for $$\mathbf{w}^{*}$$:
 
 $$ \bar{\mathbf{X}} = [\bar{\mathbf{x}}_1, \bar{\mathbf{x}}_2 ..., \bar{\mathbf{x}}_N] $$
 
-```
+```py
 # Building Xbar 
 one = np.ones((X.shape[0], 1))
 Xbar = np.concatenate((one, X), axis = 1)
@@ -155,28 +155,28 @@ Xbar = np.concatenate((one, X), axis = 1)
 $$ \mathbf{A}^{\dagger}
  = (\bar{\mathbf{X}}^T \bar{\mathbf{X}})^T $$
 
-```
+```py
 A = np.dot(Xbar.T, Xbar)
 ```
 
 $$ \mathbf{b}
  = \bar{\mathbf{X}}^T \mathbf{y} $$
 
-```
+```py
 b = np.dot(Xbar.T, y)
 ```
 
 $$ \mathbf{w}^{*} 
  = \mathbf{A}^{\dagger} \mathbf{b}$$
 
-```
+```py
 w = np.dot(np.linalg.pinv(A), b)
 print('w = ', w)
 ```
 
 Visual illustration
 
-```
+```py
 # Preparing the fitting line 
 w_0 = w[0][0]
 w_1 = w[1][0]
@@ -196,7 +196,7 @@ plt.show()
 
 #### Solution in Python with `scikit-learn` 
 
-```
+```py
 from sklearn import datasets, linear_model
 
 # fit the model by Linear Regression
